@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.marcelo.teste.domain.Categoria;
+import com.marcelo.teste.domain.Cidade;
+import com.marcelo.teste.domain.Estado;
 import com.marcelo.teste.domain.Produto;
 import com.marcelo.teste.repositories.CategoriaRepository;
+import com.marcelo.teste.repositories.CidadeRepository;
+import com.marcelo.teste.repositories.EstadoRepository;
 import com.marcelo.teste.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class TesteApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ProdutoRepository produtoRepo;
+	
+	@Autowired
+	private EstadoRepository estadoRepo;
+	
+	@Autowired
+	private CidadeRepository cidadeRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TesteApplication.class, args);
@@ -40,6 +50,19 @@ public class TesteApplication implements CommandLineRunner {
 		prod1.getCategorias().addAll(Arrays.asList(cat1));
 		prod2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		prod3.getCategorias().addAll(Arrays.asList(cat1));
+		
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade cid1 = new Cidade(null, "Uberlândia", est1);
+		Cidade cid2 = new Cidade(null, "São Paulo", est2);
+		Cidade cid3 = new Cidade(null, "Campinas", est2);
+		
+		est1.getCidades().addAll(Arrays.asList(cid1));
+		est2.getCidades().addAll(Arrays.asList(cid2, cid3));
+		
+		estadoRepo.saveAll(Arrays.asList(est1, est2));
+		cidadeRepo.saveAll(Arrays.asList(cid1, cid2, cid3));
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepo.saveAll(Arrays.asList(prod1, prod2, prod3));
