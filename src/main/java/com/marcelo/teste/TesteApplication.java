@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.marcelo.teste.domain.Categoria;
 import com.marcelo.teste.domain.Cidade;
+import com.marcelo.teste.domain.Cliente;
+import com.marcelo.teste.domain.Endereco;
 import com.marcelo.teste.domain.Estado;
 import com.marcelo.teste.domain.Produto;
+import com.marcelo.teste.domain.enums.TipoCliente;
 import com.marcelo.teste.repositories.CategoriaRepository;
 import com.marcelo.teste.repositories.CidadeRepository;
+import com.marcelo.teste.repositories.ClienteRepository;
+import com.marcelo.teste.repositories.EnderecoRepository;
 import com.marcelo.teste.repositories.EstadoRepository;
 import com.marcelo.teste.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class TesteApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CidadeRepository cidadeRepo;
+	
+	@Autowired
+	private ClienteRepository clienteRepo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TesteApplication.class, args);
@@ -66,5 +77,14 @@ public class TesteApplication implements CommandLineRunner {
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepo.saveAll(Arrays.asList(prod1, prod2, prod3));
+
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "12345678900", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("23456789", "98765432"));
+		Endereco end1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38203174", cli1, cid1);
+		Endereco end2 = new Endereco(null, "Av Matos", "106", "Sala 206", "Centro", "32654789", cli1, cid2);
+		cli1.getEndereco().addAll(Arrays.asList(end1, end2));
+		
+		clienteRepo.saveAll(Arrays.asList(cli1));
+		enderecoRepo.saveAll(Arrays.asList(end1, end2));
 	}
 }
