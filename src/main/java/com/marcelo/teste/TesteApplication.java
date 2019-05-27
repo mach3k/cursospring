@@ -13,6 +13,7 @@ import com.marcelo.teste.domain.Cidade;
 import com.marcelo.teste.domain.Cliente;
 import com.marcelo.teste.domain.Endereco;
 import com.marcelo.teste.domain.Estado;
+import com.marcelo.teste.domain.ItemPedido;
 import com.marcelo.teste.domain.Pagamento;
 import com.marcelo.teste.domain.PagamentoComBoleto;
 import com.marcelo.teste.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.marcelo.teste.repositories.CidadeRepository;
 import com.marcelo.teste.repositories.ClienteRepository;
 import com.marcelo.teste.repositories.EnderecoRepository;
 import com.marcelo.teste.repositories.EstadoRepository;
+import com.marcelo.teste.repositories.ItemPedidoRepository;
 import com.marcelo.teste.repositories.PagamentoRepository;
 import com.marcelo.teste.repositories.PedidoRepository;
 import com.marcelo.teste.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class TesteApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepo;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TesteApplication.class, args);
@@ -116,6 +121,18 @@ public class TesteApplication implements CommandLineRunner {
 
 		pedidoRepo.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepo.saveAll(Arrays.asList(pag1, pag2));
+
+		ItemPedido ip1 = new ItemPedido(ped1, prod1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, prod3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, prod2, 100.00, 1, 800.00);
 		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		prod1.getItens().addAll(Arrays.asList(ip1));
+		prod2.getItens().addAll(Arrays.asList(ip3));
+		prod3.getItens().addAll(Arrays.asList(ip2));
+
+		itemPedidoRepo.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 }
